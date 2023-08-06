@@ -36,8 +36,6 @@ model Collection {
 
   collectionItems CollectionItem[]
 
-  tags Tag[]
-
   User User @relation(fields: [userId], references: [id])
 
   @@map("collections")
@@ -51,53 +49,13 @@ model CollectionItem {
   description String?
   imageUrl    String?
 
-  averageValue Decimal @db.Decimal(10, 2)
-  releaseYear  Int
+  averageValue Decimal? @default(0) @db.Decimal(10, 2)
+  releaseYear  Int?     @default(0)
 
   iOwn       Boolean @default(true)
   isFavorite Boolean @default(false)
 
-  categories Category[]
-  rarities   Rarity?
-
   Collection Collection @relation(fields: [collectionId], references: [id])
 
   @@map("collection_items")
-}
-
-model Tag {
-  id           String @id @default(uuid())
-  collectionId String
-
-  name        String
-  description String?
-  color       String?
-
-  Collection Collection @relation(fields: [collectionId], references: [id])
-
-  @@map("tags")
-}
-
-model Category {
-  id               String @id @default(uuid())
-  collectionItemId String
-
-  name        String
-  description String?
-
-  CollectionItem CollectionItem @relation(fields: [collectionItemId], references: [id])
-
-  @@map("categories")
-}
-
-model Rarity {
-  id               String @id @default(uuid())
-  collectionItemId String @unique
-
-  name  String
-  color String
-
-  CollectionItem CollectionItem @relation(fields: [collectionItemId], references: [id])
-
-  @@map("rarities")
 }
