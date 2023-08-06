@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+
+  githubId Int? @unique
+  googleId Int? @unique
+
+  name      String
+  login     String
+  password  String?
+  avatarUrl String?
+
+  collections Collection[]
+
+  @@map("users")
+}
+
+model Collection {
+  id     String @id @default(uuid())
+  userId String
+
+  name        String
+  description String?
+  coverUrl    String?
+
+  collectionItems CollectionItem[]
+
+  tags Tag[]
+
+  User User @relation(fields: [userId], references: [id])
+
+  @@map("collections")
+}
+
+model CollectionItem {
+  id           String @id @default(uuid())
+  collectionId String
+
+  name        String
+  description String?
+  imageUrl    String?
+
+  averageValue Decimal @db.Decimal(10, 2)
+  releaseYear  Int
+
+  iOwn       Boolean @default(true)
+  isFavorite Boolean @default(false)
+
+  categories Category[]
+  rarities   Rarity?
+
+  Collection Collection @relation(fields: [collectionId], references: [id])
+
+  @@map("collection_items")
+}
+
+model Tag {
+  id           String @id @default(uuid())
+  collectionId String
+
+  name        String
+  description String?
+  color       String?
+
+  Collection Collection @relation(fields: [collectionId], references: [id])
+
+  @@map("tags")
+}
+
+model Category {
+  id               String @id @default(uuid())
+  collectionItemId String
+
+  name        String
+  description String?
+
+  CollectionItem CollectionItem @relation(fields: [collectionItemId], references: [id])
+
+  @@map("categories")
+}
+
+model Rarity {
+  id               String @id @default(uuid())
+  collectionItemId String @unique
+
+  name  String
+  color String
+
+  CollectionItem CollectionItem @relation(fields: [collectionItemId], references: [id])
+
+  @@map("rarities")
+}
