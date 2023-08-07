@@ -34,28 +34,45 @@ model Collection {
   description String?
   coverUrl    String?
 
-  collectionItems CollectionItem[]
+  funkos Funko[]
 
   User User @relation(fields: [userId], references: [id])
 
   @@map("collections")
 }
 
-model CollectionItem {
-  id           String @id @default(uuid())
-  collectionId String
+model Funko {
+  id           String  @id @default(uuid())
+  collectionId String?
 
   name        String
   description String?
   imageUrl    String?
 
-  averageValue Decimal? @default(0) @db.Decimal(10, 2)
-  releaseYear  Int?     @default(0)
+  averageValue Decimal? @db.Decimal(10, 2)
+  releaseYear  Int?
 
   iOwn       Boolean @default(true)
   isFavorite Boolean @default(false)
 
-  Collection Collection @relation(fields: [collectionId], references: [id])
+  number Int
+  label  String
+  set    String
 
-  @@map("collection_items")
+  tags Tag[]
+
+  Collection Collection? @relation(fields: [collectionId], references: [id])
+
+  @@map("funkos")
+}
+
+model Tag {
+  id      String  @id @default(uuid())
+  funkoId String?
+
+  name String
+
+  Funko Funko? @relation(fields: [funkoId], references: [id])
+
+  @@map("tags")
 }
