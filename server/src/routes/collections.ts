@@ -8,6 +8,7 @@ export async function collectionsRoutes(app: FastifyInstance) {
 
     return collections.map((collection) => {
       return {
+        id: collection.id,
         name: collection.name,
         description: collection.description,
         coverUrl: collection.coverUrl,
@@ -46,7 +47,7 @@ export async function collectionsRoutes(app: FastifyInstance) {
         name,
         description,
         coverUrl,
-        userId
+        userId,
       }
     });
 
@@ -75,7 +76,7 @@ export async function collectionsRoutes(app: FastifyInstance) {
       data: {
         name,
         description,
-        coverUrl
+        coverUrl,
       }
     });
 

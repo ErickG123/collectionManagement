@@ -9,8 +9,9 @@ import { randomUUID } from "node:crypto";
 
 import { usersRoutes } from "./routes/users";
 import { collectionsRoutes } from "./routes/collections";
-import { collectionItemsRoutes } from "./routes/collection_items";
+import { funkosRoutes } from "./routes/funkos";
 import { uploadRoutes } from "./routes/upload";
+import { tagsRoutes } from "./routes/tags";
 
 const app = fastify();
 
@@ -31,6 +32,7 @@ app.register(require("@fastify/static"), {
 app.register(usersRoutes);
 app.register(uploadRoutes);
 app.register(collectionsRoutes);
-app.register(collectionItemsRoutes);
+app.register(funkosRoutes);
+app.register(tagsRoutes)
 
 export { app };

@@ -9,8 +9,9 @@ export async function usersRoutes(app: FastifyInstance) {
 
     return users.map((user) => {
       return {
+        id: user.id,
         name: user.name,
-        login: user.login
+        login: user.login,
       }
     });
   });
@@ -45,7 +46,7 @@ export async function usersRoutes(app: FastifyInstance) {
       data: {
         name,
         login,
-        password: passwordHash
+        password: passwordHash,
       }
     });
 
@@ -68,11 +69,11 @@ export async function usersRoutes(app: FastifyInstance) {
 
     const user = await prisma.user.update({
       where: {
-        id
+        id,
       },
       data: {
         name,
-        login
+        login,
       }
     });
 
