@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { prisma } from "../lib/prisma";
 import { z } from "zod";
+import { prisma } from "../lib/prisma";
 
 export async function tagsRoutes(app: FastifyInstance) {
   app.get('/tags', async (request, reply) => {
@@ -33,13 +33,15 @@ export async function tagsRoutes(app: FastifyInstance) {
   app.post('/tags', async (request, reply) => {
     const bodySchema = z.object({
       name: z.string(),
+      funkoId: z.string(),
     });
 
-    const { name } = bodySchema.parse(request.body);
+    const { name, funkoId } = bodySchema.parse(request.body);
 
     const tag = await prisma.tag.create({
       data: {
-        name
+        name,
+        funkoId,
       }
     });
 
